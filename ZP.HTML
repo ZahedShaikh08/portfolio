@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Section - AI/ML Portfolio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        :root {
+            --dark-bg: #0a0a0a;
+            --darker-bg: #050505;
+            --card-bg: #151515;
+            --accent: #6c63ff;
+            --accent-light: #837dff;
+            --text: #f5f5f5;
+            --text-secondary: #a0a0a0;
+            --transition: all 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            --glass: rgba(255,255,255,0.04);
+        }
+
+        body {
+            background: var(--dark-bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+/* ---------- variables (tweak to match your theme) ---------- */
+:root {
+  --btn-radius: 10px;
+  --btn-padding-y: 10px;
+  --btn-padding-x: 18px;
+  --btn-gap: 8px;
+  --btn-font-weight: 600;
+  --btn-transition: 180ms cubic-bezier(.2,.9,.3,1);
+  --btn-focus-ring: 3px;
+
+  --color-bg: #0a0a0a;
+  --color-surface: #151515;
+  --color-text: #f5f5f5;
+  --color-muted: #a0a0a0;
+
+  --color-accent: #6c63ff;        /* primary */
+  --color-accent-600: #5850e6;
+  --color-accent-400: #837dff;    /* hover/alt */
+
+  --color-danger: #ef4444;
+}
+
+/* ---------- base button ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--btn-gap);
+  padding: var(--btn-padding-y) var(--btn-padding-x);
+  border-radius: var(--btn-radius);
+  font-weight: var(--btn-font-weight);
+  font-family: inherit;
+  font-size: 0.95rem;
+  line-height: 1;
+  cursor: pointer;
+  user-select: none;
+  text-decoration: none;
+  border: 0;
+  color: var(--color-text);
+  background: var(--color-accent);
+  transition: transform var(--btn-transition), box-shadow var(--btn-transition), background-color var(--btn-transition), opacity var(--btn-transition);
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Accessible focus ring (use :focus-visible) */
+.btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 var(--btn-focus-ring) rgba(108,99,255,0.18);
+  transform: translateY(-1px);
+}
+
+/* ---------- variants ---------- */
+/* Primary (default) */
+.btn-primary {
+  background: linear-gradient(180deg, var(--color-accent), var(--color-accent-600));
+  color: #fff;
+  box-shadow: 0 6px 18px rgba(108,99,255,0.12);
+}
+.btn-primary:hover { background: linear-gradient(180deg, var(--color-accent-400), var(--color-accent-600)); transform: translateY(-2px); }
+.btn-primary:active { transform: translateY(0); }
+
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* icon placement */
+.btn .icon { display:inline-flex; align-items:center; justify-content:center; }
+
+/* reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .btn, .btn * { transition: none !important; animation: none !important; }
+}
+
+
+    .glass-cta {
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border: 1px solid rgba(255,255,255,0.06);
+      backdrop-filter: blur(8px);
+      padding:10px 14px;
+      border-radius:12px;
+      box-shadow: 0 8px 30px rgba(2,6,10,0.55);
+      min-width:240px;
+      max-width:460px;
+      transition: var(--transition);
+    }
+
+    .cta-left { display:flex; gap:12px; align-items:center; min-width:0; }
+    .avatar {
+      width:44px;
+      height:44px;
+      border-radius:999px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      background: linear-gradient(135deg, rgba(108,99,255,0.06), rgba(108,99,255,0.02));
+      border: 1px solid rgba(108,99,255,0.08);
+      box-shadow: 0 6px 18px rgba(2,6,10,0.45);
+      flex:0 0 44px;
+      font-size:20px;
+    }
+    .cta-text { display:flex; flex-direction:column; min-width:0; }
+    .cta-title {
+      font-weight:700;
+      font-family: 'Playfair Display', serif;
+      font-size:0.98rem;
+      line-height:1;
+      white-space:nowrap;
+      text-overflow:ellipsis;
+      overflow:hidden;
+      max-width:240px;
+    }
+    .cta-sub { font-size:0.85rem; color:var(--text-secondary); margin-top:4px; }
+    .cta-arrow {
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      width:44px;
+      height:44px;
+      border-radius:999px;
+      background: linear-gradient(180deg, rgba(108,99,255,0.04), rgba(108,99,255,0.02));
+      border: 1px solid rgba(255,255,255,0.03);
+      color: var(--accent);
+      transition: var(--transition);
+      flex:0 0 44px;
+    }
+
+    .glass-cta:hover, .glass-cta:focus {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 50px rgba(2,6,10,0.6);
+      border-color: rgba(108,99,255,0.18);
+      outline: none;
+    }
+
+    .section-title{ 
+      font-family:'Playfair Display',serif; 
+      font-size:2.4rem; 
+      font-weight:700; 
+      margin-bottom:40px; 
+      display:inline-block; 
+      position:relative 
+    }
+    .section-title::after{ 
+      content:''; 
+      position:absolute; 
+      bottom:-8px; 
+      left:0; 
+      width:56px; 
+      height:4px; 
+      background:var(--accent); 
+      border-radius:2px 
+    }
+
+    .about{ 
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent 40%); 
+      position:relative 
+    }
+    .about-content{ 
+      display:grid; 
+      grid-template-columns:1fr 1fr; 
+      gap:40px; 
+      align-items:start 
+    }
+    .about-text{ 
+      color:var(--text-secondary); 
+      font-size:1.03rem; 
+      line-height:1.8 
+    }
+    </style>
+</head>
+<body>
+  <!-- Primary -->
+<a class="btn btn-primary" href="/work/narrative-ai">Read case study</a>
+
+<!-- Ghost -->
+<button class="btn btn-ghost" type="button">Discuss project</button>
+
+<!-- Outline -->
+<a class="btn btn-outline" href="https://github.com/omarnahdi/narrative-ai" target="_blank" rel="noopener noreferrer">View project</a>
+
+<!-- Icon -->
+<button class="btn btn-icon" aria-label="Close dialog"><i class="fas fa-times"></i></button>
+
+<!-- Sizes -->
+<button class="btn btn-primary btn-sm">Small</button>
+<button class="btn btn-primary">Default</button>
+<button class="btn btn-primary btn-lg">Large</button>
+
+<!-- Loading -->
+<button class="btn btn-primary is-loading" aria-busy="true">Saving</button>
+
+<!-- Disabled -->
+<button class="btn btn-primary" disabled>Disabled</button>
+
+<!-- Full width -->
+<button class="btn btn-primary btn-block">Contact me</button>
+
+
+  <!-- Project card — developer-friendly, semantic, accessible -->
+<section aria-labelledby="proj-narrative-ai" class="project-card" data-project="narrative-ai">
+  <figure class="project-media" role="group" aria-roledescription="project preview">
+    <img
+      class="project-image"
+      src="/images/projects/project-01/narrative_ai_og.png"
+      srcset="/images/projects/project-01/narrative_ai_og.png 1200w, /images/projects/project-01/narrative_ai_og@640.png 640w"
+      sizes="(max-width: 960px) 100vw, 960px"
+      alt="Orchestrating Multi-Agent AI Systems for Content Creation and Research — project preview image"
+      loading="lazy"
+      decoding="async"
+    />
+    <figcaption class="project-media-controls" aria-hidden="true">
+      <!-- placeholders for carousel controls if needed -->
+      <div class="controls-left"></div>
+      <div class="controls-right"></div>
+    </figcaption>
+  </figure>
+
+  <div class="project-body">
+    <header class="project-header">
+      <h2 id="proj-narrative-ai" class="project-title">Orchestrating Multi-Agent AI Systems for Content Creation & Research</h2>
+    </header>
+
+    <div class="project-meta">
+      <div class="project-author" aria-label="Author">
+        <img class="avatar" src="/images/profile_photo.png" alt="Zahed Shaikh" width="48" height="48" loading="lazy" />
+      </div>
+
+      <p class="project-blurb">
+        A multi-agent AI system for content generation, research, and selective automation across social platforms.
+      </p>
+
+      <div class="project-actions" role="group" aria-label="Project actions">
+        <a class="btn btn-primary" href="/work/narrative-ai" title="Read full case study">Read case study <span aria-hidden="true">→</span></a>
+        <a class="btn btn-ghost" href="https://github.com/omarnahdi/narrative-ai" target="_blank" rel="noopener noreferrer">View project <span aria-hidden="true">↗</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  :root{
+    --accent:#6c63ff;
+    --bg:#0a0a0a;
+    --card:#151515;
+    --text:#f5f5f5;
+    --muted:#a0a0a0;
+    --radius:12px;
+    --gap:16px;
+    --transition:200ms ease;
+  }
+
+  /* reset / simple utilities (kept minimal) */
+  .btn{display:inline-flex;align-items:center;gap:.5rem;padding:.5rem .75rem;border-radius:8px;text-decoration:none;font-weight:600;cursor:pointer;transition:transform var(--transition),box-shadow var(--transition)}
+  .btn:focus{outline:3px solid rgba(108,99,255,.18);outline-offset:3px}
+  .btn-primary{background:var(--accent);color:white}
+  .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,.06);color:var(--text)}
+
+  /* card layout */
+  .project-card{
+    display:grid;
+    grid-template-columns: 1fr;
+    gap:var(--gap);
+    background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+    border-radius:var(--radius);
+    overflow:hidden;
+    color:var(--text);
+    padding:0;
+    max-width:960px;
+  }
+
+  /* media */
+  .project-media{position:relative;aspect-ratio:16/9;margin:0;background:var(--card);display:block}
+  .project-image{width:100%;height:100%;object-fit:cover;display:block}
+
+  /* body */
+  .project-body{padding:1rem 1rem 1.25rem;display:flex;flex-direction:column;gap:.75rem}
+  .project-header{display:flex;align-items:flex-start;gap:.75rem}
+  .project-title{font-family:Inter,system-ui,-apple-system; font-size:1.25rem;margin:0;line-height:1.15}
+  .project-meta{display:flex;flex-direction:column;gap:.5rem}
+
+  .project-author{display:flex;align-items:center;gap:.5rem}
+  .avatar{width:48px;height:48px;border-radius:999px;object-fit:cover;border:2px solid rgba(255,255,255,.04)}
+
+  .project-blurb{color:var(--muted);margin:0;font-size:0.95rem}
+
+  .project-actions{display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:.5rem}
+
+  /* responsiveness */
+  @media (min-width:720px){
+    .project-card{grid-template-columns: 1fr; /* keep stacked — easy to change to 1fr 1fr if desired */ }
+    .project-body{padding:1.25rem 1.5rem}
+  }
+
+  /* reduced motion */
+  @media (prefers-reduced-motion:reduce){
+    .btn{transition:none}
+  }
+</style>
+
+<script>
+  // tiny keyboard/accessibility helper: enable "Enter / Space" activation on the entire card
+  (function () {
+    const cards = document.querySelectorAll('.project-card[data-project]');
+    cards.forEach(card => {
+      // make card focusable
+      card.tabIndex = 0;
+      card.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          // open the primary action (case study) when card is activated via keyboard
+          const primary = card.querySelector('.btn-primary');
+          if (primary) {
+            primary.focus();
+            primary.click();
+          }
+        }
+      });
+    });
+  })();
+</script>
+      
+</body>
+</html>

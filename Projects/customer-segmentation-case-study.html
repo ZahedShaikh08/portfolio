@@ -9,8 +9,33 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
 
+  <!-- 
+    CUSTOMER SEGMENTATION PROJECT PAGE ENHANCEMENT
+    ==============================================
+    Features Added:
+    - Green-themed animated background with clustering visualization
+    - Enhanced typography with gradient headings and professional text hierarchy
+    - Themed gradient buttons with hover micro-interactions (green theme)
+    - Scroll-triggered animations using IntersectionObserver
+    - Improved accessibility with focus states and reduced motion support
+    - Lightweight implementation using vanilla CSS/JS
+
+    Customization Guide:
+    - Background colors: Modify --segmentation-primary, --segmentation-secondary
+    - Animation speed: Adjust --cluster-duration and --pulse-duration
+    - Button colors: Update --btn-gradient-start, --btn-gradient-end (green theme)
+    - Typography: Change --heading-gradient colors for different gradient effects
+
+    Testing:
+    1. Scroll to see section animations trigger
+    2. Hover over buttons to see micro-interactions
+    3. Toggle theme to see background adaptation
+    4. Test keyboard navigation and focus states
+    5. Check mobile responsiveness
+  -->
+
   <style>
-    /* ===== theme variables (green accent) ===== */
+    /* ===== CUSTOMER SEGMENTATION THEME VARIABLES ===== */
     :root{
       --dark-bg: #0a0a0a;
       --darker-bg: #050505;
@@ -22,7 +47,30 @@
       --transition: all 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       --glass: rgba(255,255,255,0.04);
       --nav-height: 64px;
+      
+      /* Customer Segmentation specific theme colors */
+      --segmentation-primary: #10b981;
+      --segmentation-secondary: #059669;
+      --segmentation-accent: #34d399;
+      --segmentation-analytics: #6ee7b7;
+      
+      /* Background animation variables */
+      --cluster-duration: 20s;
+      --pulse-duration: 6s;
+      --node-opacity: 0.08;
+      
+      /* Button theme variables */
+      --btn-gradient-start: var(--segmentation-primary);
+      --btn-gradient-end: var(--segmentation-secondary);
+      --btn-glow: rgba(16, 185, 129, 0.4);
+      --btn-radius: 12px;
+      --btn-transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      
+      /* Typography variables */
+      --heading-gradient: linear-gradient(135deg, var(--segmentation-primary), var(--segmentation-analytics));
+      --text-glow: 0 0 20px rgba(16, 185, 129, 0.3);
     }
+
     html.light {
       --dark-bg: #ffffff;
       --darker-bg: #f6f7fb;
@@ -30,11 +78,109 @@
       --text: #0b1220;
       --text-secondary: #4b5563;
       --glass: rgba(11,18,32,0.02);
+      --node-opacity: 0.04;
+      --btn-glow: rgba(16, 185, 129, 0.2);
     }
 
-    /* ===== base reset / layout ===== */
+    /* ===== ANIMATED CLUSTERING BACKGROUND ===== */
+    .segmentation-background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .data-cluster {
+      position: absolute;
+      border-radius: 50%;
+      background: radial-gradient(circle, var(--segmentation-primary), transparent);
+      opacity: var(--node-opacity);
+      filter: blur(15px);
+      animation: cluster-float var(--cluster-duration) infinite ease-in-out;
+      will-change: transform;
+    }
+
+    .cluster-1 {
+      width: 250px;
+      height: 250px;
+      top: 15%;
+      left: 8%;
+      animation-duration: 25s;
+      background: radial-gradient(circle, var(--segmentation-primary), transparent);
+    }
+
+    .cluster-2 {
+      width: 180px;
+      height: 180px;
+      top: 65%;
+      right: 12%;
+      animation-duration: 22s;
+      animation-delay: -3s;
+      background: radial-gradient(circle, var(--segmentation-secondary), transparent);
+    }
+
+    .cluster-3 {
+      width: 220px;
+      height: 220px;
+      bottom: 25%;
+      left: 18%;
+      animation-duration: 28s;
+      animation-delay: -7s;
+      background: radial-gradient(circle, var(--segmentation-analytics), transparent);
+    }
+
+    .cluster-4 {
+      width: 160px;
+      height: 160px;
+      top: 35%;
+      right: 22%;
+      animation-duration: 24s;
+      animation-delay: -12s;
+      background: radial-gradient(circle, var(--segmentation-primary), transparent);
+    }
+
+    @keyframes cluster-float {
+      0%, 100% {
+        transform: translate(0, 0) scale(1);
+      }
+      25% {
+        transform: translate(30px, -25px) scale(1.08);
+      }
+      50% {
+        transform: translate(-15px, 35px) scale(0.95);
+      }
+      75% {
+        transform: translate(-25px, -15px) scale(1.03);
+      }
+    }
+
+    /* Data point connections */
+    .data-connection {
+      position: absolute;
+      background: linear-gradient(90deg, transparent, var(--segmentation-primary), transparent);
+      height: 1px;
+      opacity: 0.04;
+      animation: data-pulse var(--pulse-duration) infinite ease-in-out;
+    }
+
+    @keyframes data-pulse {
+      0%, 100% { opacity: 0.03; }
+      50% { opacity: 0.08; }
+    }
+
+    /* ===== BASE STYLES ===== */
     *{box-sizing:border-box;margin:0;padding:0}
     html,body{height:100%}
+    
+    /* Smooth scrolling */
+    html {
+      scroll-behavior: smooth;
+    }
+    
     body{
       font-family:'Inter',sans-serif;
       background:var(--dark-bg);
@@ -48,10 +194,52 @@
     a{color:inherit;text-decoration:none}
     .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
 
-    /* progress bar */
-    #progress { position: fixed; top: 0; left: 0; height: 3px; background: linear-gradient(90deg, var(--accent), var(--accent-light)); width: 0%; z-index: 9999; transition: width .15s linear; }
+    /* ===== ENHANCED TYPOGRAPHY ===== */
+    .gradient-heading {
+      background: var(--heading-gradient);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      display: inline-block;
+    }
 
-    /* modern menu */
+    .text-glow {
+      text-shadow: var(--text-glow);
+    }
+
+    .section-subtitle {
+      background: linear-gradient(135deg, var(--text-secondary), var(--segmentation-analytics));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      font-weight: 500;
+    }
+
+    /* ===== SCROLL ANIMATIONS ===== */
+    [data-animate] {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    [data-animate].is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ===== PROGRESS BAR ===== */
+    #progress { 
+      position: fixed; 
+      top: 0; 
+      left: 0; 
+      height: 3px; 
+      background: linear-gradient(90deg, var(--segmentation-primary), var(--segmentation-analytics)); 
+      width: 0%; 
+      z-index: 9999; 
+      transition: width .15s linear; 
+    }
+
+    /* ===== MODERN MENU ===== */
     .modern-menu{
       position: fixed;
       top: 20px;
@@ -94,7 +282,6 @@
       gap:1px;
     }
     .logo-accent{color:var(--accent);font-weight:700}
-
     .nav-container{
       display:flex;
       align-items:center;
@@ -117,6 +304,10 @@
     }
     .nav-button:hover{ color:var(--text); background:var(--glass) }
     .nav-button.selected{ background: rgba(16,185,129,0.12); color:var(--accent) }
+    .nav-button:focus { 
+      outline: 2px solid var(--segmentation-primary); 
+      outline-offset: 2px;
+    }
 
     .menu-toggle{
       display:none;
@@ -132,53 +323,341 @@
     .menu-toggle.active span:nth-child(1){ transform: rotate(-45deg) translate(-5px,6px)}
     .menu-toggle.active span:nth-child(2){ opacity:0}
     .menu-toggle.active span:nth-child(3){ transform: rotate(45deg) translate(-5px,-6px)}
+    .menu-toggle:focus {
+      outline: 2px solid var(--segmentation-primary);
+      outline-offset: 2px;
+    }
 
-    /* Hero & content (kept from original) */
-    .hero{ padding: 160px 0 80px; text-align:center }
-    .project-tag{ display:inline-block; background: rgba(16, 185, 129, 0.1); color: var(--accent); padding: 8px 16px; border-radius: 20px; font-size: 0.9rem; font-weight: 600; margin-bottom: 2rem; }
-    .hero h1{ font-size:3.5rem; font-weight:700; margin-bottom:1.5rem; line-height:1.1 }
-    .hero p{ font-size:1.2rem; color:var(--text-secondary); max-width:600px; margin:0 auto 3rem }
+    /* ===== ENHANCED HERO SECTION ===== */
+    .hero{ 
+      padding: 160px 0 80px; 
+      text-align:center;
+      position: relative;
+    }
+    .project-tag{ 
+      display:inline-block; 
+      background: linear-gradient(135deg, var(--segmentation-primary), var(--segmentation-secondary));
+      color: white;
+      padding: 8px 20px;
+      border-radius: 20px; 
+      font-size: 0.9rem; 
+      font-weight: 600; 
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+    }
+    .hero h1{ 
+      font-size:3.5rem; 
+      font-weight:700; 
+      margin-bottom:1.5rem; 
+      line-height:1.1;
+      background: var(--heading-gradient);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: var(--text-glow);
+    }
+    .hero p{ 
+      font-size:1.2rem; 
+      color:var(--text-secondary); 
+      max-width:600px; 
+      margin:0 auto 3rem;
+      font-weight: 400;
+    }
 
-    .project-meta{ display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:2rem; max-width:800px; margin:0 auto }
-    .meta-item h4{ color:var(--text-secondary); font-size:0.9rem; text-transform:uppercase; letter-spacing:1px; margin-bottom:0.5rem }
-    .meta-item p{ font-weight:600; font-size:1.1rem }
+    /* Project meta grid */
+    .project-meta{ 
+      display:grid; 
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+      gap:2rem; 
+      max-width:800px; 
+      margin:0 auto;
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 16px;
+      padding: 2rem;
+    }
+    .meta-item h4{ 
+      color:var(--text-secondary); 
+      font-size:0.9rem; 
+      text-transform:uppercase; 
+      letter-spacing:1px; 
+      margin-bottom:0.5rem;
+      font-weight: 600;
+    }
+    .meta-item p{ 
+      font-weight:600; 
+      font-size:1.1rem;
+      color: var(--text);
+    }
 
-    .content-section{ padding:80px 0 }
-    .section-header{text-align:center;margin-bottom:4rem}
-    .section-header h2{ font-size:2.5rem; font-weight:700; margin-bottom:1rem }
-    .section-header p{ font-size:1.1rem; color:var(--text-secondary); max-width:600px; margin:0 auto }
+    /* ===== CONTENT SECTIONS ===== */
+    .content-section{ 
+      padding:100px 0;
+      position: relative;
+    }
+    .section-header{
+      text-align:center;
+      margin-bottom:4rem;
+    }
+    .section-header h2{ 
+      font-size:2.5rem; 
+      font-weight:700; 
+      margin-bottom:1rem;
+      background: var(--heading-gradient);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .section-header p{ 
+      font-size:1.1rem; 
+      color:var(--text-secondary); 
+      max-width:600px; 
+      margin:0 auto;
+      font-weight: 400;
+    }
 
-    .content-grid{ display:grid; grid-template-columns:1fr 1fr; gap:4rem; align-items:center }
-    .content-text h3{ font-size:1.5rem; font-weight:600; margin-bottom:1rem }
-    .content-text p{ color:var(--text-secondary); margin-bottom:1.5rem }
-    .content-text ul{ color:var(--text-secondary); margin-left:1.5rem; margin-bottom:1.5rem }
-    .content-image{ border-radius:12px; overflow:hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.3) }
-    .content-image img{ width:100%; height:auto; display:block }
+    .content-grid{ 
+      display:grid; 
+      grid-template-columns:1fr 1fr; 
+      gap:4rem; 
+      align-items:center;
+    }
+    .content-text h3{ 
+      font-size:1.5rem; 
+      font-weight:600; 
+      margin-bottom:1rem;
+      color: var(--text);
+    }
+    .content-text p{ 
+      color:var(--text-secondary); 
+      margin-bottom:1.5rem;
+      line-height: 1.7;
+    }
+    .content-text ul {
+      color: var(--text-secondary);
+      margin-bottom: 1.5rem;
+      padding-left: 1.5rem;
+    }
+    .content-text li {
+      margin-bottom: 0.5rem;
+      line-height: 1.6;
+    }
+    .content-image{ 
+      border-radius:16px; 
+      overflow:hidden; 
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+      transition: transform 0.5s ease;
+    }
+    .content-image:hover {
+      transform: translateY(-8px);
+    }
+    .content-image img{ 
+      width:100%; 
+      height:auto; 
+      display:block;
+      transition: transform 0.5s ease;
+    }
+    .content-image:hover img {
+      transform: scale(1.05);
+    }
 
-    .tech-stack{ display:flex; flex-wrap:wrap; gap:1rem; justify-content:center; margin-top:2rem }
-    .tech-item{ background:var(--card-bg); padding:12px 24px; border-radius:8px; font-weight:500; border:1px solid rgba(255,255,255,0.06) }
+    .tech-stack{ 
+      display:flex; 
+      flex-wrap:wrap; 
+      gap:1rem; 
+      justify-content:center; 
+      margin-top:2rem;
+    }
+    .tech-item{ 
+      background: linear-gradient(135deg, var(--card-bg), var(--glass));
+      padding:12px 24px; 
+      border-radius:8px; 
+      font-weight:500; 
+      border:1px solid rgba(255,255,255,0.06);
+      transition: var(--transition);
+    }
+    .tech-item:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(16, 185, 129, 0.2);
+      border-color: var(--segmentation-primary);
+    }
 
-    .results-grid{ display:grid; grid-template-columns:repeat(auto-fit, minmax(250px,1fr)); gap:2rem; margin-top:3rem }
-    .result-card{ background:var(--card-bg); padding:2rem; border-radius:12px; text-align:center; border:1px solid rgba(255,255,255,0.06) }
-    .result-number{ font-size:2.5rem; font-weight:700; color:var(--accent); margin-bottom:0.5rem }
-    .result-label{ color:var(--text-secondary); font-size:0.9rem; text-transform:uppercase; letter-spacing:1px }
 
-    .cta-section{ text-align:center; padding:80px 0; background:var(--card-bg); border-radius:20px; margin:4rem 0 }
-    .btn{ display:inline-flex; align-items:center; gap:.5rem; background:var(--accent); color:white; padding:12px 24px; border-radius:8px; text-decoration:none; font-weight:600; transition:all .3s; border:none; cursor:pointer }
-    .btn:hover{ background:var(--accent-light); transform:translateY(-2px) }
-    .btn-outline{ background:transparent; border:2px solid var(--accent); color:var(--accent) }
-    .btn-outline:hover{ background:var(--accent); color:white }
+    /* ===== ENHANCED BUTTONS ===== */
+    .btn-group {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 2rem;
+    }
 
-    footer{ background:var(--darker-bg); padding:60px 0 40px; text-align:center }
-    .social-links{ display:flex; justify-content:center; gap:12px; margin-bottom:20px }
-    .social-link{ width:44px; height:44px; border-radius:50%; background:var(--card-bg); display:flex; align-items:center; justify-content:center; color:var(--text); transition:var(--transition); text-decoration:none }
-    .social-link:hover{ transform:translateY(-6px); background:var(--accent) }
-    .copyright{ margin-top:20px; color:var(--text-secondary) }
+    .btn{ 
+      display:inline-flex; 
+      align-items:center; 
+      gap:.5rem; 
+      background: linear-gradient(135deg, var(--btn-gradient-start), var(--btn-gradient-end));
+      color:white; 
+      padding:14px 32px; 
+      border-radius:var(--btn-radius); 
+      text-decoration:none; 
+      font-weight:600; 
+      transition:var(--btn-transition); 
+      border:none; 
+      cursor:pointer;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 15px var(--btn-glow);
+    }
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s ease;
+    }
+    .btn:hover::before {
+      left: 100%;
+    }
+    .btn:hover{ 
+      transform:translateY(-3px);
+      box-shadow: 0 8px 25px var(--btn-glow);
+    }
+    .btn:active {
+      transform: translateY(-1px);
+    }
+    .btn:focus {
+      outline: 2px solid var(--segmentation-primary);
+      outline-offset: 2px;
+    }
 
-    #backToTop{ position:fixed; right:20px; bottom:28px; width:46px; height:46px; border-radius:50%; background:var(--card-bg); display:flex; align-items:center; justify-content:center; cursor:pointer; border:none; box-shadow:0 8px 20px rgba(0,0,0,0.3); z-index:9999; transition:var(--transition); opacity:0; pointer-events:none; color: var(--text); }
-    #backToTop.visible{ opacity:1; pointer-events:auto }
-    #backToTop:focus { outline: 2px solid var(--accent); outline-offset: 2px; }
+    .btn-outline{ 
+      background:transparent; 
+      border:2px solid var(--segmentation-primary); 
+      color:var(--segmentation-primary);
+      box-shadow: none;
+      position: relative;
+    }
+    .btn-outline::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, var(--segmentation-primary), var(--segmentation-secondary));
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: -1;
+    }
+    .btn-outline:hover::before {
+      opacity: 1;
+    }
+    .btn-outline:hover{ 
+      background:transparent; 
+      color:white;
+      border-color: transparent;
+      transform: translateY(-3px);
+    }
 
+    .cta-section{ 
+      text-align:center; 
+      padding:80px 0; 
+      background:var(--glass); 
+      border-radius:20px; 
+      margin:4rem 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--heading-gradient);
+    }
+
+    /* ===== FOOTER ===== */
+    footer{ 
+      background:var(); 
+      padding:60px 0 40px; 
+      text-align:center;
+      position: relative;
+    }
+    .social-links{ 
+      display:flex; 
+      justify-content:center; 
+      gap:12px; 
+      margin-bottom:20px;
+    }
+    .social-link{ 
+      width:44px; 
+      height:44px; 
+      border-radius:50%; 
+      background:var(); 
+      display:flex; 
+      align-items:center; 
+      justify-content:center; 
+      color:var(--text); 
+      transition:var(--transition); 
+      text-decoration:none;
+    }
+    .social-link:hover{ 
+      transform:translateY(-6px); 
+      background: linear-gradient(135deg, var(--segmentation-primary), var(--segmentation-secondary));
+      color: white;
+    }
+    .social-link:focus {
+      outline: 2px solid var(--segmentation-primary);
+      outline-offset: 2px;
+    }
+    .copyright{ 
+      margin-top:20px; 
+      color:var(--text-secondary);
+    }
+
+    /* ===== BACK TO TOP BUTTON ===== */
+    #backToTop{ 
+      position:fixed; 
+      right:20px; 
+      bottom:28px; 
+      width:46px;
+      height:46px;
+      border-radius:50%; 
+      background:var(--glass); 
+      display:flex;
+      align-items:center;
+      justify-content:center; 
+      cursor:pointer; 
+      border:none; 
+      box-shadow:0 8px 20px rgba(0,0,0,0.3); 
+      z-index:9999; 
+      transition:var(--transition); 
+      opacity:0; 
+      pointer-events:none;
+      color: var(--text);
+    }
+    #backToTop.visible{ 
+      opacity:1; 
+      pointer-events:auto;
+    }
+    #backToTop:hover {
+      background: linear-gradient(135deg, var(--segmentation-primary), var(--segmentation-secondary));
+      color: white;
+      transform: translateY(-4px);
+    }
+    #backToTop:focus { 
+      outline: 2px solid var(--segmentation-primary); 
+      outline-offset: 2px; 
+    }
+
+    /* ===== RESPONSIVE DESIGN ===== */
     @media (max-width: 992px){
       .menu-toggle{ display:flex }
       .nav-container{
@@ -200,20 +679,48 @@
       .modern-menu{ left:16px; transform:none; right:16px; width:auto }
       .modern-menu.menu-scrolled{ left:12px; right:12px; transform:none }
     }
-
     @media (max-width: 768px){
       .hero h1{ font-size:2.5rem }
       .content-grid{ grid-template-columns:1fr; gap:2rem }
       .project-meta{ grid-template-columns:1fr }
       .btn-group{ flex-direction:column; align-items:center }
       .btn{ width:100%; max-width:300px; justify-content:center }
+      .section-header h2 { font-size: 2rem; }
     }
 
+    /* ===== REDUCED MOTION SUPPORT ===== */
     @media (prefers-reduced-motion: reduce){
-      *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+      *, *::before, *::after { 
+        animation-duration: 0.01ms !important; 
+        animation-iteration-count: 1 !important; 
+        transition-duration: 0.01ms !important; 
+      }
+      
+      .data-cluster, .data-connection {
+        animation: none;
+        opacity: 0.02;
+      }
+      
+      [data-animate] {
+        transition: none;
+        opacity: 1;
+        transform: none;
+      }
+      
+      .btn, .btn-outline, .content-image, .tech-item, .result-card {
+        transition: none;
+      }
+      
+      .btn:hover, .btn-outline:hover, .content-image:hover, .tech-item:hover, .result-card:hover {
+        transform: none;
+      }
+      
+      html {
+        scroll-behavior: auto;
+      }
     }
 
-    /* make skip link visible on focus */
+    /* Reveal skip link on focus */
     .skip-visible {
       position: absolute;
       left: 12px;
@@ -224,16 +731,35 @@
       border-radius: 6px;
       z-index: 1200;
       text-decoration: none;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .skip-visible:focus {
+      outline: 2px solid var(--segmentation-primary);
+      outline-offset: 2px;
     }
   </style>
 </head>
 <body>
+  <!-- Customer Segmentation Animated Background -->
+  <div class="segmentation-background" aria-hidden="true">
+    <div class="data-cluster cluster-1"></div>
+    <div class="data-cluster cluster-2"></div>
+    <div class="data-cluster cluster-3"></div>
+    <div class="data-cluster cluster-4"></div>
+    
+    <!-- Data connections -->
+    <div class="data-connection" style="top: 25%; left: 12%; width: 180px; transform: rotate(25deg);"></div>
+    <div class="data-connection" style="top: 60%; right: 18%; width: 160px; transform: rotate(-20deg);"></div>
+    <div class="data-connection" style="bottom: 35%; left: 22%; width: 200px; transform: rotate(40deg);"></div>
+    <div class="data-connection" style="top: 45%; right: 25%; width: 170px; transform: rotate(-35deg);"></div>
+  </div>
+
   <!-- progress bar -->
   <div id="progress" aria-hidden="true"></div>
 
   <!-- nav -->
   <nav class="modern-menu" id="modernMenu" role="navigation" aria-label="Main Navigation">
-    <a href="#index" class="logo" id="logo"><span class="logo-accent">P</span>ortfolio</a>
+    <a href="../index.html" class="logo" id="logo"><span class="logo-accent">P</span>ortfolio</a>
 
     <button class="menu-toggle" id="menuToggle" aria-expanded="false" aria-controls="navContainer" aria-label="Toggle navigation">
       <span></span>
@@ -242,25 +768,23 @@
     </button>
 
     <div class="nav-container" id="navContainer" role="menubar">
-      <a href="../index.html" class="nav-button selected" role="menuitem"><i class="fas fa-home" aria-hidden="true"></i></a>
+      <a href="../index.html" class="nav-button" role="menuitem"><i class="fas fa-home" aria-hidden="true"></i></a>
       <a href="../about.html" class="nav-button" role="menuitem"><i class="fas fa-user" aria-hidden="true"></i></a>
-      <a href="../Projects.html" class="nav-button" role="menuitem"><i class="fas fa-briefcase" aria-hidden="true"></i></a>
-      <a href="#contact" class="nav-button" role="menuitem"><i class="fas fa-envelope" aria-hidden="true"></i></a>
+      <a href="../Projects.html" class="nav-button selected" role="menuitem"><i class="fas fa-briefcase" aria-hidden="true"></i></a>
       <button class="nav-button" id="themeToggle" aria-pressed="false" title="Toggle theme"><i class="fas fa-moon" aria-hidden="true"></i></button>
     </div>
   </nav>
- </nav>
 
   <!-- main -->
   <main id="mainContent" tabindex="-1">
     <!-- Hero Section -->
     <section class="hero" id="index">
       <div class="container">
-        <span class="project-tag">Marketing Analytics</span>
-        <h1>AI-Powered Customer Segmentation</h1>
-        <p>Uncovering hidden customer patterns through clustering algorithms to drive data-driven marketing strategies.</p>
+        <span class="project-tag" data-animate>Marketing Analytics</span>
+        <h1 data-animate>AI-Powered Customer Segmentation</h1>
+        <p data-animate>Uncovering hidden customer patterns through clustering algorithms to drive data-driven marketing strategies.</p>
 
-        <div class="project-meta">
+        <div class="project-meta" data-animate>
           <div class="meta-item">
             <h4>Role</h4>
             <p>Data Scientist & ML Engineer</p>
@@ -280,12 +804,12 @@
     <!-- Project Overview -->
     <section class="content-section" id="overview">
       <div class="container">
-        <div class="section-header">
+        <div class="section-header" data-animate>
           <h2>Project Overview</h2>
-          <p>Transforming customer data into actionable marketing insights through machine learning</p>
+          <p class="section-subtitle">Transforming customer data into actionable marketing insights through machine learning</p>
         </div>
         <div class="content-grid">
-          <div class="content-text">
+          <div class="content-text" data-animate>
             <h3>Data-Driven Customer Insights</h3>
             <p>This customer segmentation system analyzes purchasing patterns, demographic data, and behavioral metrics to identify distinct customer groups, enabling targeted marketing strategies.</p>
             <p>By understanding customer segments, businesses can optimize marketing spend, improve customer retention, and increase conversion rates through personalized approaches.</p>
@@ -296,25 +820,25 @@
               <li>Automated segment-based campaign recommendations</li>
             </ul>
           </div>
-          <div class="content-image">
-            <img src="../img/CSM.png" alt="Customer Segmentation Dashboard" loading="lazy">
+          <div class="content-image" data-animate>
+            <img src="../img/CSM.png" alt="Customer Segmentation Dashboard showing customer clusters and analytics" loading="lazy" width="600" height="400">
           </div>
         </div>
       </div>
     </section>
 
     <!-- The Challenge -->
-    <section class="content-section" style="background: var(--card-bg);" id="challenge">
+    <section class="content-section" style="background: var();" id="challenge">
       <div class="container">
-        <div class="section-header">
+        <div class="section-header" data-animate>
           <h2>The Challenge</h2>
-          <p>Overcoming marketing inefficiencies through data-driven segmentation</p>
+          <p class="section-subtitle">Overcoming marketing inefficiencies through data-driven segmentation</p>
         </div>
         <div class="content-grid">
-          <div class="content-image">
-            <img src="Projects_img/CSM-challenge.jpeg" alt="Marketing Challenges" loading="lazy">
+          <div class="content-image" data-animate>
+            <img src="Projects_img/CSM-challenge.jpeg" alt="Marketing Challenges - showing generic campaigns and customer churn" loading="lazy" width="600" height="400">
           </div>
-          <div class="content-text">
+          <div class="content-text" data-animate>
             <h3>Inefficient Marketing Strategies</h3>
             <p>Traditional one-size-fits-all marketing approaches result in wasted resources and missed opportunities for customer engagement.</p>
             <p>Key challenges addressed:</p>
@@ -333,12 +857,12 @@
     <!-- Technical Approach -->
     <section class="content-section" id="technical">
       <div class="container">
-        <div class="section-header">
+        <div class="section-header" data-animate>
           <h2>Technical Approach</h2>
-          <p>Building robust clustering models for accurate customer segmentation</p>
+          <p class="section-subtitle">Building robust clustering models for accurate customer segmentation</p>
         </div>
         <div class="content-grid">
-          <div class="content-text">
+          <div class="content-text" data-animate>
             <h3>Advanced Clustering Methodology</h3>
             <p>Implemented multiple clustering algorithms and ensemble methods to ensure accurate and meaningful customer segments.</p>
 
@@ -363,25 +887,25 @@
               <span class="tech-item">Seaborn</span>
             </div>
           </div>
-          <div class="content-image">
-            <img src="Projects_img/CSM-architecture.jpeg" alt="Clustering System Architecture" loading="lazy">
+          <div class="content-image" data-animate>
+            <img src="Projects_img/CSM-architecture.jpeg" alt="Clustering System Architecture showing data flow and ML pipeline" loading="lazy" width="600" height="400">
           </div>
         </div>
       </div>
     </section>
 
     <!-- Key Features -->
-    <section class="content-section" style="background: var(--card-bg);" id="features">
+    <section class="content-section" style="background: var();" id="features">
       <div class="container">
-        <div class="section-header">
+        <div class="section-header" data-animate>
           <h2>Key Features</h2>
-          <p>Comprehensive customer segmentation capabilities</p>
+          <p class="section-subtitle">Comprehensive customer segmentation capabilities</p>
         </div>
         <div class="content-grid">
-          <div class="content-image">
-            <img src="Projects_img/CSM-feature.jpeg" alt="Segmentation Features" loading="lazy">
+          <div class="content-image" data-animate>
+            <img src="Projects_img/CSM-feature.jpeg" alt="Segmentation Features - dashboard showing customer segments and analytics" loading="lazy" width="600" height="400">
           </div>
-          <div class="content-text">
+          <div class="content-text" data-animate>
             <h3>Intelligent Segmentation System</h3>
 
             <h4>Multi-Dimensional Analysis</h4>
@@ -403,14 +927,14 @@
     <!-- CTA Section -->
     <section class="cta-section" id="cta">
       <div class="container">
-        <h2>Explore the Project</h2>
-        <p>Check out the complete implementation and technical details on GitHub</p>
+        <h2 data-animate>Explore the Project</h2>
+        <p data-animate>Check out the complete implementation and technical details on GitHub</p>
         <div class="btn-group">
-          <a href="https://github.com/ZahedShaikh08" class="btn" target="_blank" rel="noopener noreferrer">
-            <i class="fab fa-github" aria-hidden="true"></i> View on GitHub
+          <a href="https://github.com/ZahedShaikh08/Customer-Segmentation-with-K-Means" class="btn" target="_blank" rel="noopener noreferrer" data-animate>
+            <i class="fab fa-github"></i> View on GitHub
           </a>
-          <a href="../projects.html" class="btn btn-outline">
-            <i class="fas fa-arrow-left" aria-hidden="true"></i> Back to Projects
+          <a href="../projects.html" class="btn btn-outline" data-animate>
+            <i class="fas fa-arrow-left"></i> Back to Projects
           </a>
         </div>
       </div>
@@ -418,7 +942,7 @@
   </main>
 
   <!-- Footer -->
-  <footer>
+  <footer id="contact">
     <div class="social-links" role="navigation" aria-label="Social links">
       <a href="https://github.com/ZahedShaikh08" target="_blank" rel="noreferrer" class="social-link github" aria-label="GitHub">
         <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 496 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg">
@@ -473,6 +997,33 @@
     const backToTop = document.getElementById('backToTop');
     const yearElement = document.getElementById('year');
     const skipToMain = document.getElementById('skipToMain');
+
+    // Scroll animations with IntersectionObserver
+    function initScrollAnimations() {
+      if (!('IntersectionObserver' in window) || prefersReduced) {
+        // Fallback: show all animated elements
+        document.querySelectorAll('[data-animate]').forEach(el => {
+          el.classList.add('is-visible');
+        });
+        return;
+      }
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+      });
+
+      document.querySelectorAll('[data-animate]').forEach(el => {
+        observer.observe(el);
+      });
+    }
 
     // Focus trap utility
     let _focusTrapHandler = null;
@@ -579,6 +1130,7 @@
         skipToMain.classList.remove('sr-only');
         skipToMain.classList.add('skip-visible');
       }
+      initScrollAnimations();
       initThemeToggle();
       initSmoothScroll();
       initBackToTop();
